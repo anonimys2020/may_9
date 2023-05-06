@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Upload Image</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <form action="/upload/upload.php" method="post" enctype="multipart/form-data" class="border rounded p-4">
+      <div class="form-group">
+        <label for="image">Выберите файл:</label>
+        <input type="file" name="image" id="image" class="form-control-file btn btn-secondary" accept=".png,.jpg,.jpeg" required>
+      </div>
+      <div class="form-group">
+        <label for="image">Или перетащите сюда:</label>
+        <div class="border rounded p-4" id="drop-area">
+          <p class="text-center m-0">Перетащите сюда изображение</p>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+  </div>
+  
+  <script>
+    const dropArea = document.getElementById("drop-area");
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+      document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    // Highlight drop area when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropArea.addEventListener(eventName, highlight, false);
+    });
+
+    // Unhighlight drop area when item is dragged away from it
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropArea.addEventListener(eventName, unhighlight, false);
+    });
+
+    // Handle dropped files
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function preventDefaults(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    function highlight(e) {
+      dropArea.classList.add('bg-light');
+    }
+
+    function unhighlight(e) {
+      dropArea.classList.remove('bg-light');
+    }
+
+    function handleDrop(e) {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      document.getElementById("image").files = files;
+    }
+  </script>
+  
+</body>
+</html>
